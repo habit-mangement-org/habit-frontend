@@ -6,7 +6,7 @@ import UserList from "./components/UserList";
 function App() {
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Digital Habit Manager</h1>
+      <h1>Digital Habit Analyzer</h1>
       <UserForm />
       <hr />
       <UserList />
