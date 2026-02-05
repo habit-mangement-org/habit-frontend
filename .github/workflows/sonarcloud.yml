@@ -33,7 +33,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=askar_askar-845_habit-frontend
+            -Dsonar.projectKey=Askar-845_habit-frontend
             -Dsonar.organization=askar-845
             -Dsonar.sources=src
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
