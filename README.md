@@ -1,70 +1,60 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+📝 Habit Manager – Frontend
 
-## Available Scripts
+This is the React frontend for the Habit Manager Application.
+It allows users to create habits, track progress, and update their scores.
 
-In the project directory, you can run:
+🚀 Live Frontend URL (Vercel)
 
-### `npm start`
+👉 https://habit-frontend-alpha.vercel.app/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+⚠️ Important Usage Note
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This frontend depends on the backend service.
 
-### `npm test`
+👉 Before using the frontend:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+• Open the backend URL once
+• https://habit-backend-7mh4.onrender.com/api/users/all
 
-### `npm run build`
+• Wait for the backend to start (Render Free Plan may take 30–60 seconds)
+• Then open the frontend URL
+• If backend is not running, data will not load
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+📊 Project Presentation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+👉 Download Project PPT
+(Add your PPT link here)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+🛠️ Tech Stack
 
-### `npm run eject`
+• React
+• Axios
+• HTML / CSS
+• JavaScript
+• Vercel (Deployment)
+• SonarCloud
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+▶️ Run Locally
+git clone https://github.com/<your-username>/habit-frontend.git
+cd habit-frontend
+npm install
+npm start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Frontend runs at:
+👉 http://localhost:3000
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+🔍 SonarCloud
 
-## Learn More
+SonarCloud analysis configured
+Quality Gate passed successfully ✅
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🔗 Backend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+👉 Backend Repository:
+https://github.com/
+<your-username>/habit-backend
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+👉 Live Backend URL:
+https://habit-backend-7mh4.onrender.com/api/users/all
