@@ -23,8 +23,7 @@ This frontend depends on the backend service.
 
 📊 Project Presentation
 
-👉 Download Project PPT
-(Add your PPT link here)
+👉 https://github.com/habit-mangement-org/habit-frontend/blob/main/Habit-Manager-Frontend.pptx
 
 🛠️ Tech Stack
 
