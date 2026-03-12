@@ -1,59 +1,88 @@
+# Habit Manager Frontend
 
-📝 Habit Manager – Frontend
+React frontend for the Habit Manager application.
 
-This is the React frontend for the Habit Manager Application.
-It allows users to create habits, track progress, and update their scores.
+## Backend API Configuration
 
-🚀 Live Frontend URL (Vercel)
+The app reads the backend base URL from:
 
-👉 https://habit-frontend-alpha.vercel.app/
+- `process.env.REACT_APP_API_BASE_URL`
 
-⚠️ Important Usage Note
+If not set, it defaults to:
 
-This frontend depends on the backend service.
+- `https://habit-backend-api-gzafhjcjcsf0fdfn.southeastasia-01.azurewebsites.net/api/users`
 
-👉 Before using the frontend:
+All frontend API calls use this base URL from `src/config/apiConfig.js`.
 
-• Open the backend URL once
-• https://habit-backend-7mh4.onrender.com/api/users/all
+## Local Development
 
-• Wait for the backend to start (Render Free Plan may take 30–60 seconds)
-• Then open the frontend URL
-• If backend is not running, data will not load
+Install dependencies:
 
-📊 Project Presentation
-
-👉 https://github.com/habit-mangement-org/habit-frontend/blob/main/Habit-Manager-Frontend.pptx
-
-🛠️ Tech Stack
-
-• React
-• Axios
-• HTML / CSS
-• JavaScript
-• Vercel (Deployment)
-• SonarCloud
-
-▶️ Run Locally
-git clone https://github.com/<your-username>/habit-frontend.git
-cd habit-frontend
+```bash
 npm install
+```
+
+Run local dev server:
+
+```bash
+npm run dev
+```
+
+Build production bundle:
+
+```bash
+npm run build
+```
+
+Run production build locally:
+
+```bash
 npm start
+```
 
+## Azure App Service Deployment (Node.js)
 
-Frontend runs at:
-👉 http://localhost:3000
+This project is configured for Azure App Service startup and build:
 
-🔍 SonarCloud
+- `postinstall` runs `npm run build` during deployment.
+- `start` runs `serve -s build` to serve the React production build.
 
-SonarCloud analysis configured
-Quality Gate passed successfully ✅
+### 1) Create / Configure App Service
 
-🔗 Backend
+- Runtime stack: Node.js LTS (18+ recommended)
+- OS: Linux recommended
 
-👉 Backend Repository:
-https://github.com/
-<your-username>/habit-backend
+### 2) Configure Application Settings
 
-👉 Live Backend URL:
-https://habit-backend-7mh4.onrender.com/api/users/all
+In Azure Portal -> App Service -> Environment variables, add:
+
+- `REACT_APP_API_BASE_URL = https://habit-backend-api-gzafhjcjcsf0fdfn.southeastasia-01.azurewebsites.net/api/users`
+- `SCM_DO_BUILD_DURING_DEPLOYMENT = true`
+
+Optional startup command in portal:
+
+- `npm start`
+
+### 3) Deploy
+
+Use any supported deployment method (GitHub Actions, Local Git, ZIP deploy, or VS Code Azure extension).
+
+During deployment Azure will:
+
+1. Run `npm install`
+2. Trigger `postinstall` -> `npm run build`
+3. Start app with `npm start`
+
+### 4) Verify
+
+1. Open your frontend App Service URL.
+2. Confirm data loads from the backend.
+3. Check App Service logs if needed:
+   - Log stream in Azure Portal
+   - Or `az webapp log tail`
+
+## Scripts
+
+- `npm run dev` -> Local React development server
+- `npm run build` -> Production build
+- `npm start` -> Serves `build/` for production/Azure
