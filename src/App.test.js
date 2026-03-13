@@ -1,8 +1,19 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+jest.mock("./services/userService", () => ({
+  __esModule: true,
+  getUsers: jest.fn(() => Promise.resolve([])),
+  addScore: jest.fn(() => Promise.resolve({})),
+  deleteUser: jest.fn(() => Promise.resolve()),
+  updateUser: jest.fn(() => Promise.resolve({})),
+}));
+
+test('renders the table header "Name"', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(
+    screen.getByRole("columnheader", {
+      name: /name/i,
+    })
+  ).toBeInTheDocument();
 });
