@@ -91,7 +91,7 @@ function UserList() {
               <td>
                 <button onClick={() => addScore(u.id).then(loadUsers)}>+1</button>
                 <button onClick={() => handleEdit(u)}>Edit</button>
-                <button onClick={() => handleDelete(u.id)}>Delete</button>
+               <button onClick={() => deleteUser(u.id).then(loadUsers)}>Delete</button>
               </td>
             </tr>
           ))}
