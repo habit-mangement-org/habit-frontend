@@ -31,7 +31,7 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // ✅ API PROXY (NO CORS ERROR)
+  // ✅ API PROXY
   if (req.url.startsWith("/api")) {
     const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 
