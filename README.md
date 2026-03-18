@@ -1,5 +1,5 @@
 n     # Habit Manager Frontend
-
+    
 React frontend for the Habit Manager application.
 
 ## Backend API Configuration
