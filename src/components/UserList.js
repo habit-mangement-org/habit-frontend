@@ -33,27 +33,6 @@ function UserList() {
     loadUsers();
   };
 
-  const handleDelete = async (userId) => {
-    const adminPassword = window.prompt("Administration Password");
-
-    if (adminPassword === null || adminPassword.trim() === "") {
-      return;
-    }
-
-    if (adminPassword.trim() !== "2005") {
-      alert("Invalid administration password.");
-      return;
-    }
-
-    try {
-      await deleteUser(userId);
-      await loadUsers();
-      alert("User deleted successfully.");
-    } catch (error) {
-      console.error("Failed to delete user:", error);
-      alert("Delete failed. Please try again.");
-    }
-  };
 
   return (
     <div>
