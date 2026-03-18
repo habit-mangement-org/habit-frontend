@@ -40,6 +40,12 @@ Run production build locally:
 npm start
 ```
 
+Serve existing production build without rebuilding:
+
+```bash
+npm run start:serve
+```
+
 ## Azure App Service Deployment (Node.js)
 
 This project is configured for Azure App Service startup and build:
@@ -85,4 +91,5 @@ During deployment Azure will:
 
 - `npm run dev` -> Local React development server
 - `npm run build` -> Production build
-- `npm start` -> Serves `build/` for production/Azure
+- `npm start` -> Builds latest code, then serves `build/`
+- `npm run start:serve` -> Serves existing `build/` only
