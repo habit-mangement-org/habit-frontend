@@ -3,114 +3,76 @@ const fs = require("fs");
 const path = require("path");
 
 const buildDir = path.join(__dirname, "build");
-const port = Number(process.env.PORT) || 3000;
-const host = "0.0.0.0";
+const port = process.env.PORT || 8080;
+
+// ✅ YOUR BACKEND URL
+const API_URL = "https://habit-backend-api-gzafhjcjcsf0fdfn.southeastasia-01.azurewebsites.net";
 
 const contentTypes = {
-  ".html": "text/html; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
   ".png": "image/png",
   ".jpg": "image/jpeg",
-  ".jpeg": "image/jpeg",
-  ".gif": "image/gif",
-  ".svg": "image/svg+xml",
-  ".ico": "image/x-icon",
-  ".txt": "text/plain; charset=utf-8",
-  ".map": "application/json; charset=utf-8",
-  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".svg": "image/svg+xml"
 };
 
-function safeJoin(base, targetPath) {
-  const safeTarget = targetPath.replace(/\\/g, "/");
-  const resolvedPath = path.resolve(base, "." + safeTarget);
-  if (!resolvedPath.startsWith(base)) return null;
-  return resolvedPath;
-}
+const server = http.createServer(async (req, res) => {
 
-function send(res, statusCode, headers, body) {
-  res.writeHead(statusCode, headers);
-  res.end(body);
-}
+  // ✅ CORS FIX
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-function sendFile(res, filePath) {
-  const ext = path.extname(filePath).toLowerCase();
-  const contentType = contentTypes[ext] || "application/octet-stream";
-
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      send(res, 500, { "Content-Type": "text/plain; charset=utf-8" }, "Server error");
-      return;
-    }
-
-    const cacheControl =
-      filePath.includes(`${path.sep}static${path.sep}`) || /\.[a-f0-9]{8,}\./i.test(path.basename(filePath))
-        ? "public, max-age=31536000, immutable"
-        : "no-cache";
-
-    send(res, 200, { "Content-Type": contentType, "Cache-Control": cacheControl }, data);
-  });
-}
-
-const server = http.createServer((req, res) => {
-  if (req.method !== "GET" && req.method !== "HEAD") {
-    send(res, 405, { "Content-Type": "text/plain; charset=utf-8" }, "Method Not Allowed");
+  if (req.method === "OPTIONS") {
+    res.writeHead(200);
+    res.end();
     return;
   }
 
-  fs.stat(buildDir, (err, stats) => {
-    if (err || !stats.isDirectory()) {
-      send(
-        res,
-        500,
-        { "Content-Type": "text/plain; charset=utf-8" },
-        'Build folder not found. Run "npm run build" first.'
-      );
-      return;
-    }
+  // ✅ API PROXY (NO CORS ERROR)
+  if (req.url.startsWith("/api")) {
+    const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 
-    const urlObj = new URL(req.url, `http://${req.headers.host || "localhost"}`);
-    const requestPath = decodeURIComponent(urlObj.pathname);
-
-    const normalized = requestPath === "/" ? "/index.html" : requestPath;
-    const filePath = safeJoin(buildDir, normalized);
-
-    if (filePath) {
-      fs.stat(filePath, (statErr, fileStat) => {
-        if (!statErr && fileStat.isFile()) {
-          if (req.method === "HEAD") {
-            const ext = path.extname(filePath).toLowerCase();
-            const contentType = contentTypes[ext] || "application/octet-stream";
-            send(res, 200, { "Content-Type": contentType }, "");
-            return;
-          }
-          sendFile(res, filePath);
-          return;
-        }
-
-        // If the request looks like an asset (has an extension) and it's missing, return 404.
-        if (path.extname(normalized)) {
-          send(res, 404, { "Content-Type": "text/plain; charset=utf-8" }, "Not Found");
-          return;
-        }
-
-        // SPA fallback: serve index.html for client-side routes
-        const indexPath = path.join(buildDir, "index.html");
-        if (req.method === "HEAD") {
-          send(res, 200, { "Content-Type": contentTypes[".html"] }, "");
-          return;
-        }
-        sendFile(res, indexPath);
+    try {
+      const apiRes = await fetch(API_URL + req.url.replace("/api", ""), {
+        method: req.method,
+        headers: { "Content-Type": "application/json" }
       });
-      return;
-    }
 
-    send(res, 400, { "Content-Type": "text/plain; charset=utf-8" }, "Bad Request");
+      const data = await apiRes.text();
+      res.writeHead(apiRes.status, { "Content-Type": "application/json" });
+      res.end(data);
+    } catch (err) {
+      res.writeHead(500);
+      res.end("API Error");
+    }
+    return;
+  }
+
+  // ✅ SERVE FRONTEND
+  let filePath = path.join(buildDir, req.url === "/" ? "index.html" : req.url);
+
+  fs.readFile(filePath, (err, content) => {
+    if (err) {
+      fs.readFile(path.join(buildDir, "index.html"), (err2, content2) => {
+        if (err2) {
+          res.writeHead(500);
+          res.end("Error loading app");
+        } else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.end(content2);
+        }
+      });
+    } else {
+      const ext = path.extname(filePath);
+      res.writeHead(200, { "Content-Type": contentTypes[ext] || "text/plain" });
+      res.end(content);
+    }
   });
 });
 
-server.listen(port, host, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Serving CRA build on http://${host}:${port}`);
+server.listen(port, () => {
+  console.log("Server running on port " + port);
 });
