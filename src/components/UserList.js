@@ -1,6 +1,5 @@
 
 
-
 import React, { useEffect, useState } from "react";
 import { getUsers, addScore, deleteUser, updateUser } from "../services/userService";
 
@@ -35,28 +34,6 @@ function UserList() {
     loadUsers();
   };
 
-  // ✅ ONLY ADDED THIS FUNCTION
-  const handleDelete = async (userId) => {
-    const adminPassword = window.prompt("Administration Password");
-
-    if (adminPassword === null || adminPassword.trim() === "") {
-      return;
-    }
-
-    if (adminPassword.trim() !== "2005") {
-      alert("Invalid administration password.");
-      return;
-    }
-
-    try {
-      await deleteUser(userId);
-      await loadUsers();
-      alert("User deleted successfully.");
-    } catch (error) {
-      console.error("Failed to delete user:", error);
-      alert("Delete failed. Please try again.");
-    }
-  };
 
   return (
     <div>
@@ -94,10 +71,7 @@ function UserList() {
               <td>
                 <button onClick={() => addScore(u.id).then(loadUsers)}>+1</button>
                 <button onClick={() => handleEdit(u)}>Edit</button>
-
-                {/* ✅ ONLY CHANGED THIS LINE */}
-                <button onClick={() => handleDelete(u.id)}>Delete</button>
-
+               <button onClick={() => deleteUser(u.id).then(loadUsers)}>Delete</button>
               </td>
             </tr>
           ))}
